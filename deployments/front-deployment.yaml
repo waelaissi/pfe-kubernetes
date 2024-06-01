@@ -1,23 +1,29 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-app
-  namespace: myapp
+  namespace: jenkins
   labels:
     app: frontend-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
+      name: frontend-app
       app: frontend-app
   template:
     metadata:
+      name: frontend-app
       labels:
+        name: frontend-app
         app: frontend-app
+
     spec:
       containers:
       - name: frontend-app
         image: waelaissi/front:latest
+     
         ports:
          - containerPort: 80
 ---
@@ -27,48 +33,13 @@ metadata:
   name: frontend-app
   namespace: jenkins
   labels:
+    name: frontend-app
     app: frontend-app
 spec:
-  type: NodePort # Change this to LoadBalancer if available
+  type: LoadBalancer
   ports:
   - port: 80
     targetPort: 80
   selector:
-    app: frontend-app
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend-app
-  namespace: myapp
-  labels:
-    app: frontend-app
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: frontend-app
-  template:
-    metadata:
-      labels:
-        app: frontend-app
-    spec:
-      containers:
-      - name: frontend-app
-        image: waelaissi/front:latest
-        ports:
-         - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend-app
-  namespace: jenkins
-  labels:
-    app: frontend-app
-spec:
-  type: NodePort # Change this to LoadBalancer if available
-  ports:
-  - port: 80
-    targetPort: 80
-  selector:
+    name: frontend-app
     app: frontend-app
