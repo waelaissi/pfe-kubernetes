@@ -3,11 +3,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-app
-  namespace: jenkins
+  namespace: pidev
   labels:
     app: frontend-app
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       name: frontend-app
@@ -20,6 +20,16 @@ spec:
         app: frontend-app
 
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - frontend-app
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - name: frontend-app
         image: waelaissi/front:latest
@@ -31,7 +41,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend-app
-  namespace: jenkins
+  namespace: pidev
   labels:
     name: frontend-app
     app: frontend-app
