@@ -12,6 +12,16 @@ spec:
       labels:
         app: {{ .Release.Name }}-spring-app
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - {{ .Release.Name }}-spring-app
+              topologyKey: "kubernetes.io/hostname"
       containers:
           - name: {{ .Release.Name }}-spring-app-container
             image: {{ .Values.springApp.image.repository }}:{{ .Values.springApp.image.tag }}
