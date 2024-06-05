@@ -22,6 +22,11 @@ spec:
       containers:
           - name: {{ .Release.Name }}-spring-app-container
             image: {{ .Values.springApp.image.repository }}:{{ .Values.springApp.image.tag }}
+            resources:
+              requests:
+                cpu: "100m"
+              limits:
+                cpu: "500m"
             imagePullPolicy: {{ .Values.springApp.image.pullPolicy }}
             ports:
               - containerPort: 8089
