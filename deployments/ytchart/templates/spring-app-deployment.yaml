@@ -30,7 +30,6 @@ spec:
             imagePullPolicy: {{ .Values.springApp.image.pullPolicy }}
             ports:
               - containerPort: 8089
-            resources:
             env:
               - name: SPRING_DATASOURCE_URL
                 value: {{ include "my-spring-app.fullMySQLConnectionURL" . | quote }}
