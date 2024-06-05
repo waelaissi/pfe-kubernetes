@@ -28,6 +28,13 @@ spec:
             imagePullPolicy: {{ .Values.springApp.image.pullPolicy }}
             ports:
               - containerPort: 8089
+            resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
             env:
               - name: SPRING_DATASOURCE_URL
                 value: {{ include "my-spring-app.fullMySQLConnectionURL" . | quote }}
