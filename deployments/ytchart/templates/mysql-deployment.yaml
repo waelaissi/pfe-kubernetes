@@ -34,12 +34,7 @@ spec:
           volumeMounts:
             - name: {{ .Release.Name }}-mysql-persistent-storage
               mountPath: {{ .Values.mysqlVolume.mountPath }}
-  volumeClaimTemplates:
-    - metadata:
-        name: {{ .Release.Name }}-mysql-pvc
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: {{ .Values.mysqlVolume.persistentVolumeClaim.storageSize }}
+  volumes:
+        - name: {{ .Release.Name }}-mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-mysql-pvc
