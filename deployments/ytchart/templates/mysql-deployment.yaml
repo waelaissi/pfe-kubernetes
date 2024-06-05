@@ -3,8 +3,8 @@ kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-mysql-statefulset
 spec:
+  replicas: {{ .Values.replicaCount }}
   serviceName: {{ .Release.Name }}-mysql-service
-  replicas: 2
   selector:
     matchLabels:
       app: {{ .Release.Name }}-mysql
@@ -32,13 +32,14 @@ spec:
           ports:
             - containerPort: 3306
           volumeMounts:
-            - name: mysql-data
-              mountPath: /var/lib/mysql
+            - name: {{ .Release.Name }}-mysql-persistent-storage
+              mountPath: {{ .Values.mysqlVolume.mountPath }}
   volumeClaimTemplates:
     - metadata:
-        name: mysql-data
+        name: {{ .Release.Name }}-mysql-pvc
       spec:
-        accessModes: ["ReadWriteOnce"]
+        accessModes:
+          - ReadWriteOnce
         resources:
           requests:
             storage: {{ .Values.mysqlVolume.persistentVolumeClaim.storageSize }}
