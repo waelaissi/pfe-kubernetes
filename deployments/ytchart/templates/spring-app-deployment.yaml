@@ -24,7 +24,7 @@ spec:
             image: {{ .Values.springApp.image.repository }}:{{ .Values.springApp.image.tag }}
             resources:
               requests:
-                cpu: "100m"
+                cpu: "300m"
               limits:
                 cpu: "500m"
             imagePullPolicy: {{ .Values.springApp.image.pullPolicy }}
